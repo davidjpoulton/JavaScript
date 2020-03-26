@@ -27,6 +27,7 @@ secondParagraph.innerHTML= '<span>There </span> are many different things that y
 
 let thirdParagraph       = document.createElement('p');
 thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. Below is a very simple form, have a go!';
+
 //main section
 let mainSection          = document.createElement('section');
 
@@ -40,36 +41,36 @@ let formH1               = document.createElement('h1');
 formH1.innerHTML         = ('Very Important Form');
 //form warning message
 let warning              = document.createElement('p');
-warning.innerHTML        = ('Incorrect input, please try again');
+warning.innerHTML        = ('Nope, try again.');
+//no numbers messsage
+let numberError= document.createElement('p');
+numberError.innerHTML = 'No numbers please!';
 //form complete message
 let complete = document.createElement('p');
 complete.innerHTML = 'Very Clever!';
+//form text appears when not enough has been typed yet in the input field
+let almostThereText = document.createElement('p');
+almostThereText.innerHTML = 'Almost there...';
+//form text appears when perfect amount of characters has been entered
+let justRight = document.createElement('p');
+justRight.innerHTML = 'Just Right!';
+//form text that appears when too many characters are entered
+let tooLong = document.createElement('p');
+tooLong.innerHTML = 'Too Long.'
+
 //form element
 let form = document.createElement('form');
 //form input
 let formInput = document.createElement('input');
 formInput.required = true;
-formInput.addEventListener('click', formClear);
+formInput.addEventListener('keydown', formClear);
+formInput.placeholder = 'Enter word'
+
 //form button
 let button = document.createElement('input');
 button.type = 'submit';
 
-//form vaildation function
-form.addEventListener('submit', function(e){
-    var word = formInput.value
-    if (word.length >= 5 && word.length <= 10) {
-        complete.style.opacity   = ('1');
-        formDiv.style.background = '#5EB567';
-        e.preventDefault();
-        
-    } else if (word.length < 5 || word.length > 10){
-        warning.style.opacity = ('1');
-        formDiv.style.background = '#FF725F';
-        button.style.background = '#3E3E3E';
-        button.style.color = 'white';
-        e.preventDefault();
-    }
-});
+
 
 
 
@@ -82,6 +83,11 @@ formDiv.appendChild(formTitle);
 formDiv.appendChild(form);
 formDiv.appendChild(warning);
 formDiv.appendChild(complete);
+formDiv.appendChild(numberError);
+formDiv.appendChild(almostThereText);
+formDiv.appendChild(justRight);
+formDiv.appendChild(tooLong);
+
 
 
 
@@ -155,6 +161,34 @@ warning.style.fontWeight           = ('bold');
 warning.style.marginTop            = ('15px');
 warning.style.opacity              = ('0');
 warning.style.transition           = ('all .3s ease');
+numberError.style.color            = ('black');
+numberError.style.fontWeight       = ('bold');
+numberError.style.marginTop        = ('15px');
+numberError.style.opacity          = ('0');
+numberError.style.transition       = ('all .3s ease');
+numberError.style.position         = ('relative');
+numberError.style.bottom           = ('110px');
+almostThereText.style.color        = ('black');
+almostThereText.style.fontWeight   = ('bold');
+almostThereText.style.marginTop    = ('15px');
+almostThereText.style.opacity      = ('0');
+almostThereText.style.transition   = ('all .3s ease');
+almostThereText.style.position     = ('relative');
+almostThereText.style.bottom       = ('160px');
+justRight.style.color              = ('black');
+justRight.style.fontWeight         = ('bold');
+justRight.style.marginTop          = ('15px');
+justRight.style.opacity            = ('0');
+justRight.style.transition         = ('all .3s ease');
+justRight.style.position           = ('relative')
+justRight.style.bottom             = ('215px')
+tooLong.style.color                = ('black');
+tooLong.style.fontWeight           = ('bold');
+tooLong.style.marginTop            = ('15px');
+tooLong.style.opacity              = ('0');
+tooLong.style.transition           = ('all .3s ease');
+tooLong.style.position             = ('relative');
+tooLong.style.bottom               = ('270px');
 complete.style.transition          = ('all .3s ease');
 complete.style.opacity             = ('0');
 complete.style.color               = ('white')
@@ -174,7 +208,6 @@ button.style.fontFamily            = ('Raleway');
 button.style.fontWeight            = ('bold');
 button.style.cursor                = ('pointer');
 button.style.background            = ('linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)');
-// when input foem is clicked change div background darker
 
 //Add created Elemements to HTML, add created elements to section first.
 container.appendChild(title);
@@ -299,6 +332,61 @@ function formClear () {
     formDiv.style.background    = ('#F5F5F5');
     button.style.background = 'linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)';
     button.style.color = 'black';
+    numberError.style.opacity ='0';
+    button.style.border = ('3px solid #7AFFD2');
+}
+
+//form vaildation function
+form.addEventListener('submit', function(e){
+
+    var word = formInput.value;
+    if (!isNaN(word)) {
+        numberError.style.opacity = ('1');
+        formDiv.style.background = '#FF725F';
+        button.style.background = '#3E3E3E';
+        button.style.color = 'white';
+        button.style.border = 'none'
+        e.preventDefault();
+    }
+    else if (isNaN(word) && word.length >= 5 && word.length <= 10) {
+        complete.style.opacity   = ('1');
+        formDiv.style.background = '#5EB567';
+        justRight.style.opacity = '0';
+        e.preventDefault();
+    
+    } 
+    else if (word.length < 5 || word.length > 10){
+        warning.style.opacity = ('1');
+        formDiv.style.background = '#FF725F';
+        button.style.background = '#3E3E3E';
+        button.style.color = 'white';
+        button.style.border = 'none'
+        almostThereText.style.opacity = '0';
+        tooLong.style.opacity = '0';
+        e.preventDefault();
+    } 
+});
+
+formInput.addEventListener('keydown', update);
+
+function update() {
+    var press = formInput.value;
+
+    if (isNaN(press) && press.length >= 2 && press.length < 4) {
+        justRight.style.opacity = '0';
+        almostThereText.style.opacity = '1';
+    } 
+    else if (isNaN(press) && press.length >= 4 && press.length <= 9) {
+        almostThereText.style.opacity = '0';
+        tooLong.style.opacity = '0';
+        justRight.style.opacity = '1';
+    } else if (isNaN(press) && press.length > 9) {
+        justRight.style.opacity = '0';
+        tooLong.style.opacity = '1';
+    }
+    else if (press.length === 1 || press.length === 0) {
+        almostThereText.style.opacity = '0';
+    } 
 }
 
 
