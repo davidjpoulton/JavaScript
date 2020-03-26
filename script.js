@@ -20,7 +20,7 @@ let container = document.createElement('div');
 
 //first paragraph
 let firstParagraph       = document.createElement('p');
-firstParagraph.innerHTML = '<span>JavaScript </span>is a client side, high level programming language. It is used in conjucture with HTML & CSS to make interactive websites. It may sound simular but it has nothing to do with Java, which is a completly different language. Think of it like this: Java is to JavaScript like Car is to Carpet.';
+firstParagraph.innerHTML = '<span>JavaScript </span>is a client side, high level programming language. It is used in conjucture with HTML & CSS to make dynamic websites. It may sound simular but it has nothing to do with Java, which is a completly different language. Think of it like this: Java is to JavaScript like Car is to Carpet.';
 //second paragraph
 let secondParagraph      = document.createElement('p');
 secondParagraph.innerHTML= '<span>There </span> are many different things that you can do with JavaScript, <span>Animations</span> can be implemented using event listeners and by using using different interaction such as when somthing is <span>Hovered</span>. Or whenever the user <span>Clicks</span> on something. <span>Styling</span> can also be changed using JavaScript. You can change different colours, or Font Styles. Also you can make really sweet   <span>fade-in effects.</span> <span>Sweet! </span>';
@@ -70,8 +70,106 @@ formInput.placeholder = 'Enter word'
 let button = document.createElement('input');
 button.type = 'submit';
 
+let star = document.createElement('img')
+star.src = 'imgs/star.png';
 
 
+//game
+let canvas = document.createElement('canvas');
+ctx = canvas.getContext('2d');
+
+
+
+//ball variables
+var ballX = canvas.width/2;
+var ballY = canvas.height - 30;
+var ballRadius = 4;
+var dx = 1;
+var dy = -1;
+//paddle variables
+var paddleHeight = 5;
+var paddleWidth = 80;
+var paddleX = (canvas.width-paddleWidth)/2;
+var paddleDx = 3;
+
+// if right of left key is pressed
+var leftPressed;
+var rightPressed;
+function keyDownHandler(event) {
+    if(event.keyCode == 39) {
+        rightPressed = true;
+    } else if (event.keyCode == 37) {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(event) {
+    if(event.keyCode == 39) {
+        rightPressed = false;
+    } else if (event.keyCode == 37){
+        leftPressed = false;
+    }
+}
+
+document.addEventListener('keydown', keyDownHandler, false);
+document.addEventListener('keyup', keyUpHandler, false);
+
+
+function drawPaddle(){
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight + -5, paddleWidth, paddleHeight);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+    ctx.closePath;
+}
+
+function drawBall(){
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = 'white';
+    ctx.fill();
+    ctx.closePath();
+}
+
+function draw() {
+    ctx.clearRect(0 ,0, canvas.width, canvas.height);
+
+
+
+    drawBall();
+    drawPaddle();
+
+    if (ballX + dx > canvas.width - ballRadius || ballX + dx < ballRadius){
+        dx = -dx
+    }
+
+    if (ballY + dy < ballRadius || 
+    (
+        ballY + dy > canvas.height - paddleHeight - ballRadius &&
+        ballX + dx > paddleX &&
+        ballX + dx < paddleX + paddleWidth
+    )) {
+        dy = -dy;
+    } else if (ballY - dy > canvas.height - ballRadius) {
+        ballY = canvas.height - 30;
+        dy = -1;
+        dx = 1;
+        paddleX = (canvas.width-paddleWidth)/2;
+        cancelAnimationFrame();
+    }
+
+    if(rightPressed && (paddleX + paddleWidth) < canvas.width) {
+        paddleX += paddleDx;
+    } else if(leftPressed && paddleX > 0) {
+        paddleX -= paddleDx;
+    }
+
+    ballX += dx;
+    ballY += dy;
+ 
+    requestAnimationFrame(draw);
+}
+canvas.addEventListener('click', draw)
 
 
 //add the form elements to the form tag
@@ -87,8 +185,7 @@ formDiv.appendChild(numberError);
 formDiv.appendChild(almostThereText);
 formDiv.appendChild(justRight);
 formDiv.appendChild(tooLong);
-
-
+formDiv.appendChild(star);
 
 
 // STYLING
@@ -195,6 +292,13 @@ complete.style.color               = ('white')
 complete.style.fontWeight          = ('bold');
 complete.style.position            = ('relative')
 complete.style.bottom              = ('55px')
+star.style.position                = 'relative';
+star.style.top                     = '-600px';
+star.style.left                    = '350px';
+star.style.transition              = 'all .1s ease';
+star.style.opacity                 = '0';
+star.style.height                  = '200px';
+star.style.width                   = 'auto';
 formInput.style.width              = ('200px');
 formInput.style.height             = ('30px');
 formInput.style.height             = ('30px');
@@ -209,6 +313,12 @@ button.style.fontWeight            = ('bold');
 button.style.cursor                = ('pointer');
 button.style.background            = ('linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)');
 
+//game canvas
+canvas.style.width                 = ('750px');
+canvas.style.height                = ('400px');
+canvas.style.background            = ('black');
+canvas.style.marginTop             = ('50px');
+
 //Add created Elemements to HTML, add created elements to section first.
 container.appendChild(title);
 container.appendChild(subHeading);
@@ -216,6 +326,7 @@ container.appendChild(firstParagraph);
 container.appendChild(secondParagraph);
 container.appendChild(thirdParagraph);
 container.appendChild(formDiv);
+container.appendChild(canvas);
 mainSection.appendChild(container);
 document.body.appendChild(mainSection);
 
@@ -334,6 +445,7 @@ function formClear () {
     button.style.color = 'black';
     numberError.style.opacity ='0';
     button.style.border = ('3px solid #7AFFD2');
+    star.style.opacity ='0';
 }
 
 //form vaildation function
@@ -387,8 +499,9 @@ form.addEventListener('submit', function(e){
         complete.style.opacity   = ('1');
         formDiv.style.background = '#5EB567';
         justRight.style.opacity = '0';
+        star.style.opacity = '1';
         e.preventDefault();
-    
+        
     } 
     else if (word.length < 5 || word.length > 10){
         warning.style.opacity = ('1');
