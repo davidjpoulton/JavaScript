@@ -477,7 +477,7 @@ document.body.style.fontSize       = '1.1em';
 document.body.style.textDecoration = 'none';
 //section styling
 mainSection.style.width            = '90%';
-mainSection.style.height           = '2900px';
+mainSection.style.height           = '3030px';
 mainSection.style.margin           = '40px auto'
 mainSection.style.backgroundColor  = '#353535';
 mainSection.style.display          = 'flex';
@@ -505,15 +505,15 @@ firstParagraph.style.lineHeight    = '45px';
 firstParagraph.style.letterSpacing = '.5px';
 //Second paragraph styling      
 secondParagraph.style.lineHeight   = '45px';
-secondParagraph.style.marginTop    = '100px';
+secondParagraph.style.marginTop    = '150px';
 secondParagraph.style.letterSpacing= '.5px';
 //Third paragraph styling      
 thirdParagraph.style.lineHeight    = '45px';
-thirdParagraph.style.marginTop     = '80px';
+thirdParagraph.style.marginTop     = '120px';
 thirdParagraph.style.letterSpacing = '.5px';
 //Forth paragraph styling
 fourthParagraph.style.lineHeight   = '45px';
-fourthParagraph.style.marginTop    = '140px';
+fourthParagraph.style.marginTop    = '180px';
 fourthParagraph.style.letterSpacing= '.5px';
 //Fifth paragraph styling
 fifthParagraph.style.lineHeight    = '45px';
