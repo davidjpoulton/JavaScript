@@ -3,7 +3,7 @@
 
 
 
-// CREATED HTML ELEMENTS
+// CREATED HTML ELEMENTS----------------------------------------------------------------
 
 //title (which is an image)
 let title                = document.createElement('img');
@@ -17,24 +17,103 @@ subHeading.appendChild(subHeadingText);
 
 //content container
 let container = document.createElement('div');
-
+//main section
+let mainSection          = document.createElement('section');
 //first paragraph
 let firstParagraph       = document.createElement('p');
 firstParagraph.innerHTML = '<span>JavaScript </span>is a client side, high level programming language. It is used in conjucture with HTML & CSS to make dynamic websites. It may sound simular but it has nothing to do with Java, which is a completly different language. Think of it like this: Java is to JavaScript like Car is to Carpet.';
 //second paragraph
 let secondParagraph      = document.createElement('p');
 secondParagraph.innerHTML= '<span>DOM Manipulation </span> stands for Document Object Model and is a main feature of javascript, with the ability to change and create HTML elements and css styles. <span>Animations</span> can be implemented using event listeners and by using using different interaction such as when somthing is <span>Hovered</span>. Or whenever the user <span>Clicks</span> on something. <span>Styling</span> can also be changed using JavaScript. You can change different colours, or Font Styles. Also you can make really sweet   <span>fade-in effects.</span> <span>Sweet! </span>';
-
+//third paragraph
 let thirdParagraph       = document.createElement('p');
 thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. This is useful to make sure that a user has entered the correct information to be submitted.  Below is a very simple example, have a go!';
-
+//fourth paragraph
 let fourthParagraph      = document.createElement('p');
 fourthParagraph.innerHTML= '<span>Games </span>can also be made using pure JavaScript. It is often best practice to use a framework such as Phaser, hovever you can use vanilla JavaScipt to create simple games. I have created a simple game of pong below which is made purely of vanilla JavaScript.';
+//fifth paragraph
+let fifthParagraph       = document.createElement('p');
+fifthParagraph.innerHTML = '<span>But wait, theres more. </span> This only outlines a tiny proportion of the functionality of JavaScript. JavaScript can be used as a backend language via NodeJS. To find out more about JavaScript i find the best resource to be <a href="https://developer.mozilla.org/">MDN Web Documents by Mozilla.</a>';
 
-//main section
-let mainSection          = document.createElement('section');
 
-//form section
+//footer section
+let followMe             = document.createElement('p');
+followMe.innerHTML       = 'Follow Me';
+let pageMade             = document.createElement('p');
+pageMade.innerHTML       = 'Page made by David Wilson'
+//footer container 
+let footerContainer      = document.createElement('footer');
+let footerImg01          = document.createElement('img');
+footerImg01.src          = 'imgs/github.png';
+let footerImg02          = document.createElement('img');
+footerImg02.src          = 'imgs/twitter.png';
+let footerImg03          = document.createElement('img');
+footerImg03.src          = 'imgs/linked-in.png';
+
+
+//when github img is clicked redirect to my github page
+footerImg01.addEventListener('click', function(){
+    window.location.href = "https://github.com/davidjpoulton";
+});
+//when twitter img is clicked redirect to my twitter page
+footerImg02.addEventListener('click', function(){
+    window.location.href = "https://twitter.com/Daviid_Poulton";
+});
+//when linked-in img is clicked redirect to my linkded-in page
+footerImg03.addEventListener('click', function(){
+    window.location.href = "https://www.linkedin.com/in/david-poulton-202538114/";
+});
+
+
+//append the footer elements to container so that they can be displayed correctly
+footerContainer.appendChild(footerImg01);
+footerContainer.appendChild(footerImg02);
+footerContainer.appendChild(footerImg03);
+
+
+//Paragraph three functions
+
+//animations function
+function rotateRight() {
+    span[3].style.transform = 'rotateY(180deg)';
+}
+
+function rotateLeft() {
+    span[3].style.transform = 'rotateY(360deg)'
+}
+
+//functions for hover.
+function mouseEnter() {
+    span[4].style.boxShadow = '0 0 100px 30px'
+    span[4].style.padding = '0 10px';
+}
+
+function mouseLeave() {
+    span[4].style.boxShadow = '0 0 0 0';
+    span[4].style.padding = '0';
+}
+
+//function for click event.
+function toggle() {
+    x = span[5];
+
+    if (x.style.color === "white") {
+        x.style.color = "yellow";
+        x.style.fontSize = '50px';
+      } else {
+        x.style.color = "white";
+        x.style.fontSize = '30px'
+      }
+}
+
+//functions for fade-in effect.
+function fadeIn() {
+    span[8].style.opacity ='1';
+    span[8].style.transform = 'translateX(0px)';
+}
+
+
+//form section-----------------------------------------------------------------------
 let formTitle            = document.createElement('p');
 formTitle.innerHTML      = ('Please enter a word that is 5 - 10 characters long.')
 //form div
@@ -77,9 +156,104 @@ let star = document.createElement('img')
 star.src = 'imgs/star.png';
 
 
+//form functionality
+
+//change the form box when clicked
+function formClear () {
+    formInput.style.width  = ('400px');
+    warning.style.opacity  = ('0');
+    complete.style.opacity = ('0');
+    formDiv.style.background    = ('#F5F5F5');
+    button.style.background = 'linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)';
+    button.style.color = 'black';
+    numberError.style.opacity ='0';
+    button.style.border = ('3px solid #7AFFD2');
+    star.style.opacity ='0';
+}
+
+//form vaildation function
+formInput.addEventListener('keyup', update);
+    
+
+function update() {
+    var press = formInput.value;
+
+    if (event.which == 8){
+        almostThereText.style.opacity = '0';
+        justRight.style.opacity = '0';
+        tooLong.style.opacity = '0';
+    }
+    else if (event.which == 13) {
+        almostThereText.style.opacity = '0';
+        justRight.style.opacity = '0';
+        tooLong.style.opacity = '0';
+    }
+    else if(isNaN(press) && press.length >= 1 && press.length < 5) {
+        justRight.style.opacity = '0';
+        tooLong.style.opacity ='0';
+        almostThereText.style.opacity = '1';
+    } 
+    else if (isNaN(press) && press.length >= 5 && press.length <= 10) {
+        almostThereText.style.opacity = '0';
+        tooLong.style.opacity = '0';
+        justRight.style.opacity = '1';
+    } 
+    else if (isNaN(press) && press.length > 10) {
+        justRight.style.opacity = '0';
+        tooLong.style.opacity = '1';
+    }
+    
+}
+
+form.addEventListener('submit', function(e){
+
+    var word = formInput.value;
+    if (!isNaN(word)) {
+        numberError.style.opacity = ('1');
+        formDiv.style.background = '#FF725F';
+        button.style.background = '#3E3E3E';
+        button.style.color = 'white';
+        button.style.border = 'none'
+        e.preventDefault();
+    }
+    else if (isNaN(word) && word.length >= 5 && word.length <= 10) {
+        complete.style.opacity   = ('1');
+        formDiv.style.background = '#5EB567';
+        justRight.style.opacity = '0';
+        star.style.opacity = '1';
+        e.preventDefault();
+        
+    } 
+    else if (word.length < 5 || word.length > 10){
+        warning.style.opacity = ('1');
+        formDiv.style.background = '#FF725F';
+        button.style.background = '#3E3E3E';
+        button.style.color = 'white';
+        button.style.border = 'none'
+        almostThereText.style.opacity = '0';
+        tooLong.style.opacity = '0';
+        e.preventDefault();
+    }
+});
+
+//add the form elements to the form tag
+form.appendChild(formInput);
+form.appendChild(button);
+//then add the form to the div
+formDiv.appendChild(formH1);
+formDiv.appendChild(formTitle);
+formDiv.appendChild(form);
+formDiv.appendChild(warning);
+formDiv.appendChild(complete);
+formDiv.appendChild(numberError);
+formDiv.appendChild(almostThereText);
+formDiv.appendChild(justRight);
+formDiv.appendChild(tooLong);
+formDiv.appendChild(star);
 
 
-//game cavnas
+
+//GAME CODE -----------------------------------------------------------------------------------------
 let canvas = document.createElement('canvas');
 ctx = canvas.getContext('2d');
 canvas.width = 900;
@@ -289,20 +463,7 @@ function run() {
 canvas.addEventListener('click', run);
 
 
-//add the form elements to the form tag
-form.appendChild(formInput);
-form.appendChild(button);
-//then add the form to the div
-formDiv.appendChild(formH1);
-formDiv.appendChild(formTitle);
-formDiv.appendChild(form);
-formDiv.appendChild(warning);
-formDiv.appendChild(complete);
-formDiv.appendChild(numberError);
-formDiv.appendChild(almostThereText);
-formDiv.appendChild(justRight);
-formDiv.appendChild(tooLong);
-formDiv.appendChild(star);
+
 
 
 // STYLING
@@ -313,9 +474,10 @@ document.body.style.fontFamily     = 'Raleway';
 document.body.style.color          = 'white';
 document.body.style.background     = 'linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)';
 document.body.style.fontSize       = '1.1em';
+document.body.style.textDecoration = 'none';
 //section styling
 mainSection.style.width            = '90%';
-mainSection.style.height           = '2500px';
+mainSection.style.height           = '2900px';
 mainSection.style.margin           = '40px auto'
 mainSection.style.backgroundColor  = '#353535';
 mainSection.style.display          = 'flex';
@@ -350,9 +512,17 @@ thirdParagraph.style.lineHeight    = '45px';
 thirdParagraph.style.marginTop     = '80px';
 thirdParagraph.style.letterSpacing = '.5px';
 //Forth paragraph styling
-fourthParagraph.style.lineHeight    = '45px';
-fourthParagraph.style.marginTop     = '140px';
-fourthParagraph.style.letterSpacing = '.5px';
+fourthParagraph.style.lineHeight   = '45px';
+fourthParagraph.style.marginTop    = '140px';
+fourthParagraph.style.letterSpacing= '.5px';
+//Fifth paragraph styling
+fifthParagraph.style.lineHeight    = '45px';
+fifthParagraph.style.marginTop     = '140px';
+fifthParagraph.style.letterSpacing = '.5px';
+//followMe text styling
+followMe.style.lineHeight          = '45px';
+followMe.style.marginTop           = '40px';
+followMe.style.letterSpacing       = '.5px';
 //Form styling
 formDiv.style.width                = ('900px');
 formDiv.style.height               = ('300px');
@@ -433,12 +603,30 @@ button.style.fontFamily            = ('Raleway');
 button.style.fontWeight            = ('bold');
 button.style.cursor                = ('pointer');
 button.style.background            = ('linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)');
-
+//footer styling
+footerContainer.style.width        = '250px';
+footerContainer.style.display      = 'flex';
+footerContainer.style.justifyContent = 'space-around';
+footerImg01.style.height           = '50px';
+footerImg01.style.width            = 'auto';
+footerImg01.style.cursor           = 'pointer';
+footerImg02.style.height           = '50px';
+footerImg02.style.width            = 'auto';
+footerImg02.style.cursor           = 'pointer';
+footerImg03.style.height           = '50px';
+footerImg03.style.width            = 'auto';
+footerImg03.style.cursor           = 'pointer';
+pageMade.style.fontSize            = '14px'; 
+pageMade.style.marginTop           = '47px'; 
+pageMade.style.color               = '#C5C5C5'; 
 //game canvas
 canvas.style.width                 = ('900px');
 canvas.style.height                = ('400px');
 canvas.style.background            = ('black');
 canvas.style.marginTop             = ('50px');
+
+
+
 
 //Add created Elemements to HTML, add created elements to section first.
 container.appendChild(title);
@@ -449,12 +637,21 @@ container.appendChild(thirdParagraph);
 container.appendChild(formDiv);
 container.appendChild(fourthParagraph);
 container.appendChild(canvas);
+container.appendChild(fifthParagraph);
+container.appendChild(followMe);
+container.appendChild(footerContainer);
+container.appendChild(pageMade);
 mainSection.appendChild(container);
 document.body.appendChild(mainSection);
 
 
+
 //Selecting different elements once they have been generated by JS.
 let span = document.querySelectorAll('span');
+let link = document.getElementsByTagName('a');
+link[0].style.textDecoration = 'underline';
+link[0].style.color = 'white';  
+
 
 //change the property of: JavaScript.
 span[1].style.color      = '#70FFDD';
@@ -513,133 +710,19 @@ span[8].style.transform = 'translateX(-50px)';
 //change the property of form.
 span[9].style.color      = '#70FFDD';
 span[9].style.fontSize   = '45px';
+
 //change the property of games.
 span[10].style.color      = '#70FFDD';
 span[10].style.fontSize   = '45px';
 
+//change the property of but wait theres more.
+span[11].style.color      = '#70FFDD';
+span[11].style.fontSize   = '45px';
 
 
-//Paragraph three functions
-//animations function
-function rotateRight() {
-    span[3].style.transform = 'rotateY(180deg)';
-}
-
-function rotateLeft() {
-    span[3].style.transform = 'rotateY(360deg)'
-}
-
-//functions for hover.
-function mouseEnter() {
-    span[4].style.boxShadow = '0 0 100px 30px'
-    span[4].style.padding = '0 10px';
-}
-
-function mouseLeave() {
-    span[4].style.boxShadow = '0 0 0 0';
-    span[4].style.padding = '0';
-}
-
-//function for click event.
-function toggle() {
-    x = span[5];
-
-    if (x.style.color === "white") {
-        x.style.color = "yellow";
-        x.style.fontSize = '50px';
-      } else {
-        x.style.color = "white";
-        x.style.fontSize = '30px'
-      }
-}
-
-//functions for fade-in effect.
-function fadeIn() {
-    span[8].style.opacity ='1';
-    span[8].style.transform = 'translateX(0px)';
-}
 
 
-//form functionality
-//change the form box when clicked
-function formClear () {
-    formInput.style.width  = ('400px');
-    warning.style.opacity  = ('0');
-    complete.style.opacity = ('0');
-    formDiv.style.background    = ('#F5F5F5');
-    button.style.background = 'linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)';
-    button.style.color = 'black';
-    numberError.style.opacity ='0';
-    button.style.border = ('3px solid #7AFFD2');
-    star.style.opacity ='0';
-}
 
-//form vaildation function
-
-
-formInput.addEventListener('keyup', update);
-    
-
-function update() {
-    var press = formInput.value;
-
-    if (event.which == 8){
-        almostThereText.style.opacity = '0';
-        justRight.style.opacity = '0';
-        tooLong.style.opacity = '0';
-    }
-    else if (event.which == 13) {
-        almostThereText.style.opacity = '0';
-        justRight.style.opacity = '0';
-        tooLong.style.opacity = '0';
-    }
-    else if(isNaN(press) && press.length >= 1 && press.length < 5) {
-        justRight.style.opacity = '0';
-        tooLong.style.opacity ='0';
-        almostThereText.style.opacity = '1';
-    } 
-    else if (isNaN(press) && press.length >= 5 && press.length <= 10) {
-        almostThereText.style.opacity = '0';
-        tooLong.style.opacity = '0';
-        justRight.style.opacity = '1';
-    } 
-    else if (isNaN(press) && press.length > 10) {
-        justRight.style.opacity = '0';
-        tooLong.style.opacity = '1';
-    }
-    
-}
-
-form.addEventListener('submit', function(e){
-
-    var word = formInput.value;
-    if (!isNaN(word)) {
-        numberError.style.opacity = ('1');
-        formDiv.style.background = '#FF725F';
-        button.style.background = '#3E3E3E';
-        button.style.color = 'white';
-        button.style.border = 'none'
-        e.preventDefault();
-    }
-    else if (isNaN(word) && word.length >= 5 && word.length <= 10) {
-        complete.style.opacity   = ('1');
-        formDiv.style.background = '#5EB567';
-        justRight.style.opacity = '0';
-        star.style.opacity = '1';
-        e.preventDefault();
-        
-    } 
-    else if (word.length < 5 || word.length > 10){
-        warning.style.opacity = ('1');
-        formDiv.style.background = '#FF725F';
-        button.style.background = '#3E3E3E';
-        button.style.color = 'white';
-        button.style.border = 'none'
-        almostThereText.style.opacity = '0';
-        tooLong.style.opacity = '0';
-        e.preventDefault();
-    }
-});
 
 
 
