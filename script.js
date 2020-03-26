@@ -26,7 +26,7 @@ let secondParagraph      = document.createElement('p');
 secondParagraph.innerHTML= '<span>There </span> are many different things that you can do with JavaScript, <span>Animations</span> can be implemented using event listeners and by using using different interaction such as when somthing is <span>Hovered</span>. Or whenever the user <span>Clicks</span> on something. <span>Styling</span> can also be changed using JavaScript. You can change different colours, or Font Styles. Also you can make really sweet   <span>fade-in effects.</span> <span>Sweet! </span>';
 
 let thirdParagraph       = document.createElement('p');
-thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. Below is a very simple form, have a go!';
+thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. Below is a very simple example, have a go!';
 
 //main section
 let mainSection          = document.createElement('section');
@@ -136,7 +136,7 @@ thirdParagraph.style.lineHeight    = '45px';
 thirdParagraph.style.marginTop     = '40px';
 thirdParagraph.style.letterSpacing = '.5px';
 //Form styling
-formDiv.style.width                = ('750px');
+formDiv.style.width                = ('800px');
 formDiv.style.height               = ('300px');
 formDiv.style.background           = ('#F5F5F5');
 formDiv.style.marginTop            = ('10px');
@@ -337,6 +337,41 @@ function formClear () {
 }
 
 //form vaildation function
+
+
+formInput.addEventListener('keyup', update);
+    
+
+function update() {
+    var press = formInput.value;
+
+    if (event.which == 8){
+        almostThereText.style.opacity = '0';
+        justRight.style.opacity = '0';
+        tooLong.style.opacity = '0';
+    }
+    else if (event.which == 13) {
+        almostThereText.style.opacity = '0';
+        justRight.style.opacity = '0';
+        tooLong.style.opacity = '0';
+    }
+    else if(isNaN(press) && press.length >= 1 && press.length < 5) {
+        justRight.style.opacity = '0';
+        tooLong.style.opacity ='0';
+        almostThereText.style.opacity = '1';
+    } 
+    else if (isNaN(press) && press.length >= 5 && press.length <= 10) {
+        almostThereText.style.opacity = '0';
+        tooLong.style.opacity = '0';
+        justRight.style.opacity = '1';
+    } 
+    else if (isNaN(press) && press.length > 10) {
+        justRight.style.opacity = '0';
+        tooLong.style.opacity = '1';
+    }
+    
+}
+
 form.addEventListener('submit', function(e){
 
     var word = formInput.value;
@@ -364,30 +399,8 @@ form.addEventListener('submit', function(e){
         almostThereText.style.opacity = '0';
         tooLong.style.opacity = '0';
         e.preventDefault();
-    } 
-});
-
-formInput.addEventListener('keydown', update);
-
-function update() {
-    var press = formInput.value;
-
-    if (isNaN(press) && press.length >= 2 && press.length < 4) {
-        justRight.style.opacity = '0';
-        almostThereText.style.opacity = '1';
-    } 
-    else if (isNaN(press) && press.length >= 4 && press.length <= 9) {
-        almostThereText.style.opacity = '0';
-        tooLong.style.opacity = '0';
-        justRight.style.opacity = '1';
-    } else if (isNaN(press) && press.length > 9) {
-        justRight.style.opacity = '0';
-        tooLong.style.opacity = '1';
     }
-    else if (press.length === 1 || press.length === 0) {
-        almostThereText.style.opacity = '0';
-    } 
-}
+});
 
 
 
