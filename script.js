@@ -23,10 +23,13 @@ let firstParagraph       = document.createElement('p');
 firstParagraph.innerHTML = '<span>JavaScript </span>is a client side, high level programming language. It is used in conjucture with HTML & CSS to make dynamic websites. It may sound simular but it has nothing to do with Java, which is a completly different language. Think of it like this: Java is to JavaScript like Car is to Carpet.';
 //second paragraph
 let secondParagraph      = document.createElement('p');
-secondParagraph.innerHTML= '<span>There </span> are many different things that you can do with JavaScript, <span>Animations</span> can be implemented using event listeners and by using using different interaction such as when somthing is <span>Hovered</span>. Or whenever the user <span>Clicks</span> on something. <span>Styling</span> can also be changed using JavaScript. You can change different colours, or Font Styles. Also you can make really sweet   <span>fade-in effects.</span> <span>Sweet! </span>';
+secondParagraph.innerHTML= '<span>DOM Manipulation </span> stands for Document Object Model and is a main feature of javascript, with the ability to change and create HTML elements and css styles. <span>Animations</span> can be implemented using event listeners and by using using different interaction such as when somthing is <span>Hovered</span>. Or whenever the user <span>Clicks</span> on something. <span>Styling</span> can also be changed using JavaScript. You can change different colours, or Font Styles. Also you can make really sweet   <span>fade-in effects.</span> <span>Sweet! </span>';
 
 let thirdParagraph       = document.createElement('p');
-thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. Below is a very simple example, have a go!';
+thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. This is useful to make sure that a user has entered the correct information to be submitted.  Below is a very simple example, have a go!';
+
+let fourthParagraph      = document.createElement('p');
+fourthParagraph.innerHTML= '<span>Games </span>can also be made using pure JavaScript. It is often best practice to use a framework such as Phaser, hovever you can use vanilla JavaScipt to create simple games. I have created a simple game of pong below which is made purely of vanilla JavaScript.';
 
 //main section
 let mainSection          = document.createElement('section');
@@ -84,9 +87,13 @@ canvas.height = 400;
 ctx.beginPath();
 ctx.font = '50px raleway';
 ctx.fillStyle = 'white';
-ctx.fillText('Pure javaScript Pong', 200, 140);
+ctx.fillText('Pure javaScript Pong', 205, 100);
 ctx.font = '40px raleway';
-ctx.fillText('Click to start', 325, 250);
+ctx.fillText('Click to start', 325, 230);
+ctx.font = '20px raleway';
+ctx.fillText('Controls: Mouse move or Left and Right Keys', 230, 350);
+ctx.font = '12px raleway';
+ctx.fillText('Made by David Wilson', 760, 380);
 ctx.closePath();
 
 let score = 0;
@@ -99,13 +106,13 @@ let restartHeight = 70;
 var ballX = canvas.width/2;
 var ballY = canvas.height - 30;
 var ballRadius = 8;
-var dx = 2;
-var dy = -2;
+var dx = 3;
+var dy = -3;
 
 //paddle 
 var paddleHeight = 7;
 var paddleWidth = 140;
-var paddleDx = 3;
+var paddleDx = 4;
 //track mouse movements and assign value to paddleX
 canvas.addEventListener('mousemove', mouseMoveHandler, false);
 function mouseMoveHandler(e) {
@@ -115,28 +122,6 @@ function mouseMoveHandler(e) {
         paddleX = relativeX - paddleWidth;
     }
 }
-
-// if right of left key is pressed
-var leftPressed;
-var rightPressed;
-function keyDownHandler(event) {
-    if(event.keyCode == 39) {
-        rightPressed = true;
-    } else if (event.keyCode == 37) {
-        leftPressed = true;
-    }
-}
-
-function keyUpHandler(event) {
-    if(event.keyCode == 39) {
-        rightPressed = false;
-    } else if (event.keyCode == 37){
-        leftPressed = false;
-    }
-}
-
-document.addEventListener('keydown', keyDownHandler, false);
-document.addEventListener('keyup', keyUpHandler, false);
 
 //bricks 
 var brickRowCount = 4;
@@ -181,7 +166,7 @@ function drawBricks() {
                 bricks[c][r].ballY = brickY;
                 ctx.beginPath();
                 ctx.rect(brickX, brickY, brickWidth, brickHeight);
-                ctx.fillStyle = "white";
+                ctx.fillStyle = "#70FFDD";
                 ctx.fill();
                 ctx.closePath();
             }
@@ -221,17 +206,46 @@ function reload(){
     location.reload();
 }
 
+function ScoreLives(){
+    ctx.font = '20px raleway';
+    ctx.fillStyle = 'white';
+    ctx.fillText("Score: "+score, 10, 30);  
+    ctx.fillText("Lives: "+lives, 10, 60);  
+}
+
+// if right of left key is pressed
+var leftPressed;
+var rightPressed;
+function keyDownHandler(event) {
+    if(event.keyCode == 39) {
+        rightPressed = true;
+    } else if (event.keyCode == 37) {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(event) {
+    if(event.keyCode == 39) {
+        rightPressed = false;
+    } else if (event.keyCode == 37){
+        leftPressed = false;
+    }
+}
+//function to randomise ball position when player loses a life
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+document.addEventListener('keydown', keyDownHandler, false);
+document.addEventListener('keyup', keyUpHandler, false);
 function run() {
     ctx.clearRect(0 ,0, canvas.width, canvas.height);
     drawBall();
     drawPaddle();
     drawBricks();
     collisionDetection();
-    ctx.font = '20px raleway';
-    ctx.fillText("Score: "+score, 10, 30);  
-    ctx.fillText("Lives: "+lives, 10, 60);  
+    ScoreLives(); 
     
-
     if (ballX + dx > canvas.width - ballRadius || ballX + dx < ballRadius){
         dx = -dx
     }
@@ -244,14 +258,15 @@ function run() {
     )) {
         dy = -dy;
     } else if (ballY - dy > canvas.height - ballRadius) {
-        ballY = canvas.height - 30;
-        dy = -2;
-        dx = 2;
+        ballY = canvas.height - 40;
+        ballX = canvas.width/2;
+        dy = -3;
+        dx = getRandomArbitrary(-4, 4);
         lives--;
-    } else if (lives == 0) {
+    } else if (lives == 0 || score == 3200) {
         ballY = canvas.height - 30;
-        dy = -2;
-        dx = 2;
+        dy = -3;
+        dx = 3;
         paddleX = (canvas.width-paddleWidth)/2;
         ctx.font = '50px raleway';
         ctx.fillText('Game Over', 320, 220);
@@ -265,8 +280,6 @@ function run() {
     } else if(leftPressed && paddleX > 0) {
         paddleX -= paddleDx;
     }
-
-    if (ballX)
 
     ballX += dx;
     ballY += dy;
@@ -325,7 +338,7 @@ subHeading.style.color             = '#C5C5C5';
 subHeading.style.textAlign         = 'center';
 subHeading.style.margin            = '40px auto';
 //First paragraph styling
-firstParagraph.style.marginTop     = '130px';
+firstParagraph.style.marginTop     = '110px';
 firstParagraph.style.lineHeight    = '45px';
 firstParagraph.style.letterSpacing = '.5px';
 //Second paragraph styling      
@@ -334,13 +347,17 @@ secondParagraph.style.marginTop    = '100px';
 secondParagraph.style.letterSpacing= '.5px';
 //Third paragraph styling      
 thirdParagraph.style.lineHeight    = '45px';
-thirdParagraph.style.marginTop     = '40px';
+thirdParagraph.style.marginTop     = '80px';
 thirdParagraph.style.letterSpacing = '.5px';
+//Forth paragraph styling
+fourthParagraph.style.lineHeight    = '45px';
+fourthParagraph.style.marginTop     = '140px';
+fourthParagraph.style.letterSpacing = '.5px';
 //Form styling
-formDiv.style.width                = ('800px');
+formDiv.style.width                = ('900px');
 formDiv.style.height               = ('300px');
 formDiv.style.background           = ('#F5F5F5');
-formDiv.style.marginTop            = ('10px');
+formDiv.style.marginTop            = ('30px');
 formDiv.style.borderRadius         = ('10px');
 formDiv.style.textAlign            = ('center');
 formDiv.style.display              = ('flex');
@@ -430,6 +447,7 @@ container.appendChild(firstParagraph);
 container.appendChild(secondParagraph);
 container.appendChild(thirdParagraph);
 container.appendChild(formDiv);
+container.appendChild(fourthParagraph);
 container.appendChild(canvas);
 mainSection.appendChild(container);
 document.body.appendChild(mainSection);
@@ -492,9 +510,13 @@ span[8].style.transition = 'all .3s ease-in-out';
 span[8].style.display = 'inline-block';
 span[8].style.transform = 'translateX(-50px)';
 
-//change the property of games.
+//change the property of form.
 span[9].style.color      = '#70FFDD';
 span[9].style.fontSize   = '45px';
+//change the property of games.
+span[10].style.color      = '#70FFDD';
+span[10].style.fontSize   = '45px';
+
 
 
 //Paragraph three functions
