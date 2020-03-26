@@ -26,7 +26,7 @@ let secondParagraph      = document.createElement('p');
 secondParagraph.innerHTML= '<span>There </span> are many different things that you can do with JavaScript, <span>Animations</span> can be implemented using event listeners and by using using different interaction such as when somthing is <span>Hovered</span>. Or whenever the user <span>Clicks</span> on something. <span>Styling</span> can also be changed using JavaScript. You can change different colours, or Font Styles. Also you can make really sweet   <span>fade-in effects.</span> <span>Sweet! </span>';
 
 let thirdParagraph       = document.createElement('p');
-thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. here is a simple form, have a go!'
+thirdParagraph.innerHTML = '<span>Form validation </span> can also be done using JavaScript. Below is a very simple form, have a go!';
 //main section
 let mainSection          = document.createElement('section');
 
@@ -41,15 +41,35 @@ formH1.innerHTML         = ('Very Important Form');
 //form warning message
 let warning              = document.createElement('p');
 warning.innerHTML        = ('Incorrect input, please try again');
+//form complete message
+let complete = document.createElement('p');
+complete.innerHTML = 'Very Clever!';
 //form element
 let form = document.createElement('form');
 //form input
 let formInput = document.createElement('input');
 formInput.required = true;
-formInput.addEventListener('click', formChange);
+formInput.addEventListener('click', formClear);
 //form button
 let button = document.createElement('input');
 button.type = 'submit';
+
+//form vaildation function
+form.addEventListener('submit', function(e){
+    var word = formInput.value
+    if (word.length >= 5 && word.length <= 10) {
+        complete.style.opacity   = ('1');
+        formDiv.style.background = '#5EB567';
+        e.preventDefault();
+        
+    } else if (word.length < 5 || word.length > 10){
+        warning.style.opacity = ('1');
+        formDiv.style.background = '#FF725F';
+        button.style.background = '#3E3E3E';
+        button.style.color = 'white';
+        e.preventDefault();
+    }
+});
 
 
 
@@ -61,6 +81,7 @@ formDiv.appendChild(formH1);
 formDiv.appendChild(formTitle);
 formDiv.appendChild(form);
 formDiv.appendChild(warning);
+formDiv.appendChild(complete);
 
 
 
@@ -106,29 +127,40 @@ secondParagraph.style.marginTop    = '100px';
 secondParagraph.style.letterSpacing= '.5px';
 //Third paragraph styling      
 thirdParagraph.style.lineHeight    = '45px';
-thirdParagraph.style.marginTop     = '100px';
+thirdParagraph.style.marginTop     = '40px';
 thirdParagraph.style.letterSpacing = '.5px';
 //Form styling
-formDiv.style.width                = ('600px');
+formDiv.style.width                = ('750px');
 formDiv.style.height               = ('300px');
 formDiv.style.background           = ('#F5F5F5');
 formDiv.style.marginTop            = ('10px');
-formDiv.style.borderRadius         = ('20px');
+formDiv.style.borderRadius         = ('10px');
 formDiv.style.textAlign            = ('center');
 formDiv.style.display              = ('flex');
 formDiv.style.flexDirection        = ('column');
 formDiv.style.alignItems           = ('center');
+formDiv.style.transition           = ('all .3s ease');
 form.style.display                 = ('flex');
 form.style.flexDirection           = ('column');
 form.style.alignItems              = ('center');
 formTitle.style.letterSpacing      = ('.5px');
 formTitle.style.fontSize           = ('.7em');
 formTitle.style.color              = ('black');
+formTitle.style.transition         = ('all .3s ease');
 formH1.style.color                 = ('black');
 formH1.style.fontSize              = ('2em');
-warning.style.color                = ('red');
+formH1.style.transition            = ('all .3s ease');
+warning.style.color                = ('black');
+warning.style.fontWeight           = ('bold');
 warning.style.marginTop            = ('15px');
-warning.style.opacity              = ('1');
+warning.style.opacity              = ('0');
+warning.style.transition           = ('all .3s ease');
+complete.style.transition          = ('all .3s ease');
+complete.style.opacity             = ('0');
+complete.style.color               = ('white')
+complete.style.fontWeight          = ('bold');
+complete.style.position            = ('relative')
+complete.style.bottom              = ('55px')
 formInput.style.width              = ('200px');
 formInput.style.height             = ('30px');
 formInput.style.height             = ('30px');
@@ -257,30 +289,17 @@ function fadeIn() {
     span[8].style.transform = 'translateX(0px)';
 }
 
+
+//form functionality
 //change the form box when clicked
-function formChange () {
-    formInput.style.width = ('400px');
+function formClear () {
+    formInput.style.width  = ('400px');
+    warning.style.opacity  = ('0');
+    complete.style.opacity = ('0');
+    formDiv.style.background    = ('#F5F5F5');
+    button.style.background = 'linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)';
+    button.style.color = 'black';
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
