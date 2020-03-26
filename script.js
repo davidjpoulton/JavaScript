@@ -74,23 +74,47 @@ let star = document.createElement('img')
 star.src = 'imgs/star.png';
 
 
-//game
+
+
+//game cavnas
 let canvas = document.createElement('canvas');
 ctx = canvas.getContext('2d');
+canvas.width = 900;
+canvas.height = 400;
+ctx.beginPath();
+ctx.font = '50px raleway';
+ctx.fillStyle = 'white';
+ctx.fillText('Pure javaScript Pong', 200, 140);
+ctx.font = '40px raleway';
+ctx.fillText('Click to start', 325, 250);
+ctx.closePath();
 
+let score = 0;
+let lives = 3;
+ 
+let restartWidth = 170;
+let restartHeight = 70;
 
-
-//ball variables
+//ball 
 var ballX = canvas.width/2;
 var ballY = canvas.height - 30;
-var ballRadius = 4;
-var dx = 1;
-var dy = -1;
-//paddle variables
-var paddleHeight = 5;
-var paddleWidth = 80;
-var paddleX = (canvas.width-paddleWidth)/2;
+var ballRadius = 8;
+var dx = 2;
+var dy = -2;
+
+//paddle 
+var paddleHeight = 7;
+var paddleWidth = 140;
 var paddleDx = 3;
+//track mouse movements and assign value to paddleX
+canvas.addEventListener('mousemove', mouseMoveHandler, false);
+function mouseMoveHandler(e) {
+
+    var relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth;
+    }
+}
 
 // if right of left key is pressed
 var leftPressed;
@@ -114,14 +138,64 @@ function keyUpHandler(event) {
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 
+//bricks 
+var brickRowCount = 4;
+var brickColumnCount = 8;
+var brickWidth = 75;
+var brickHeight = 20;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 120;
 
-function drawPaddle(){
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight + -5, paddleWidth, paddleHeight);
-    ctx.fillStyle = 'white';
-    ctx.fill();
-    ctx.closePath;
+var bricks = [];
+for (var c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for (var r = 0; r < brickRowCount; r++) {
+        bricks[c][r] = { x: 0, y: 0, status: 1 };
+    }
 }
+
+
+function collisionDetection() {
+    for (var c = 0; c < brickColumnCount; c++) {
+        for (var r = 0; r < brickRowCount; r++) {
+            var b = bricks[c][r];
+            if (b.status == 1) {
+                if (ballX > b.ballX && ballX < b.ballX + brickWidth && ballY > b.ballY && ballY < b.ballY + brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+                    score += 100
+                }
+            }
+        }
+    }
+}
+
+function drawBricks() {
+    for (var c = 0; c < brickColumnCount; c++) {
+        for (var r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status == 1) {
+                var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                bricks[c][r].ballX = brickX;
+                bricks[c][r].ballY = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "white";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight - 5, paddleWidth, paddleHeight);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.closePath();
+  }
 
 function drawBall(){
     ctx.beginPath();
@@ -131,13 +205,32 @@ function drawBall(){
     ctx.closePath();
 }
 
-function draw() {
+function restart(){
+    ctx.beginPath();
+    ctx.rect(100, 200, restartWidth, restartHeight);
+    ctx.fillStyle = '#00FFC2';
+    ctx.fill();
+    ctx.fillStyle = 'black';
+    ctx.font = '26px raleway';
+    ctx.fillText('Start Again', 122, 245);
+    ctx.closePath();
+    canvas.addEventListener('click', reload);
+}
+
+function reload(){
+    location.reload();
+}
+
+function run() {
     ctx.clearRect(0 ,0, canvas.width, canvas.height);
-
-
-
     drawBall();
     drawPaddle();
+    drawBricks();
+    collisionDetection();
+    ctx.font = '20px raleway';
+    ctx.fillText("Score: "+score, 10, 30);  
+    ctx.fillText("Lives: "+lives, 10, 60);  
+    
 
     if (ballX + dx > canvas.width - ballRadius || ballX + dx < ballRadius){
         dx = -dx
@@ -152,9 +245,18 @@ function draw() {
         dy = -dy;
     } else if (ballY - dy > canvas.height - ballRadius) {
         ballY = canvas.height - 30;
-        dy = -1;
-        dx = 1;
+        dy = -2;
+        dx = 2;
+        lives--;
+    } else if (lives == 0) {
+        ballY = canvas.height - 30;
+        dy = -2;
+        dx = 2;
         paddleX = (canvas.width-paddleWidth)/2;
+        ctx.font = '50px raleway';
+        ctx.fillText('Game Over', 320, 220);
+        ctx.fillText('Score: ' + score, 320, 270);
+        restart();
         cancelAnimationFrame();
     }
 
@@ -164,12 +266,14 @@ function draw() {
         paddleX -= paddleDx;
     }
 
+    if (ballX)
+
     ballX += dx;
     ballY += dy;
  
-    requestAnimationFrame(draw);
+    requestAnimationFrame(run);
 }
-canvas.addEventListener('click', draw)
+canvas.addEventListener('click', run);
 
 
 //add the form elements to the form tag
@@ -198,7 +302,7 @@ document.body.style.background     = 'linear-gradient(259.81deg, #E8FF5A 5.72%, 
 document.body.style.fontSize       = '1.1em';
 //section styling
 mainSection.style.width            = '90%';
-mainSection.style.height           = '2000px';
+mainSection.style.height           = '2500px';
 mainSection.style.margin           = '40px auto'
 mainSection.style.backgroundColor  = '#353535';
 mainSection.style.display          = 'flex';
@@ -314,7 +418,7 @@ button.style.cursor                = ('pointer');
 button.style.background            = ('linear-gradient(259.81deg, #E8FF5A 5.72%, #70FFDD 83.31%)');
 
 //game canvas
-canvas.style.width                 = ('750px');
+canvas.style.width                 = ('900px');
 canvas.style.height                = ('400px');
 canvas.style.background            = ('black');
 canvas.style.marginTop             = ('50px');
