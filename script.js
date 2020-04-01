@@ -354,7 +354,7 @@ function drawPaddle() {
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.closePath();
-  }
+}
 
 function drawBall(){
     ctx.beginPath();
@@ -477,7 +477,7 @@ document.body.style.fontSize       = '1.1em';
 document.body.style.textDecoration = 'none';
 //section styling
 mainSection.style.width            = '90%';
-mainSection.style.height           = '3030px';
+mainSection.style.height           = '3070px';
 mainSection.style.margin           = '40px auto'
 mainSection.style.backgroundColor  = '#353535';
 mainSection.style.display          = 'flex';
